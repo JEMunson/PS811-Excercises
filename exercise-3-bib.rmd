@@ -12,20 +12,13 @@ author:
       - Conceptualization
       - Writing - Original Draft Preparation
       - Writing - Review & Editing
-  - name          : "Jessie Munson"
-    affiliation   : "1,2"
-    role:
-      - Writing - Review & Editing
+
 
 affiliation:
   - id            : "1"
     institution   : "University of Wisconsin - Madison"
   - id            : "2"
     institution   : "Department of Political Science"
-
-
-Comparative Politics Field Seminar: |
-
 
   
 keywords          : "keywords"
