@@ -1,0 +1,180 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  english,
+  man]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdflang={en-EN},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+% Manuscript styling
+\usepackage{upgreek}
+\captionsetup{font=singlespacing,justification=justified}
+
+% Table formatting
+\usepackage{longtable}
+\usepackage{lscape}
+% \usepackage[counterclockwise]{rotating}   % Landscape page setup for large tables
+\usepackage{multirow}		% Table styling
+\usepackage{tabularx}		% Control Column width
+\usepackage[flushleft]{threeparttable}	% Allows for three part tables with a specified notes section
+\usepackage{threeparttablex}            % Lets threeparttable work with longtable
+
+% Create new environments so endfloat can handle them
+% \newenvironment{ltable}
+%   {\begin{landscape}\begin{center}\begin{threeparttable}}
+%   {\end{threeparttable}\end{center}\end{landscape}}
+\newenvironment{lltable}{\begin{landscape}\begin{center}\begin{ThreePartTable}}{\end{ThreePartTable}\end{center}\end{landscape}}
+
+% Enables adjusting longtable caption width to table width
+% Solution found at http://golatex.de/longtable-mit-caption-so-breit-wie-die-tabelle-t15767.html
+\makeatletter
+\newcommand\LastLTentrywidth{1em}
+\newlength\longtablewidth
+\setlength{\longtablewidth}{1in}
+\newcommand{\getlongtablewidth}{\begingroup \ifcsname LT@\roman{LT@tables}\endcsname \global\longtablewidth=0pt \renewcommand{\LT@entry}[2]{\global\advance\longtablewidth by ##2\relax\gdef\LastLTentrywidth{##2}}\@nameuse{LT@\roman{LT@tables}} \fi \endgroup}
+
+% \setlength{\parindent}{0.5in}
+% \setlength{\parskip}{0pt plus 0pt minus 0pt}
+
+% \usepackage{etoolbox}
+\makeatletter
+\patchcmd{\HyOrg@maketitle}
+  {\section{\normalfont\normalsize\abstractname}}
+  {\section*{\normalfont\normalsize\abstractname}}
+  {}{\typeout{Failed to patch abstract.}}
+\patchcmd{\HyOrg@maketitle}
+  {\section{\protect\normalfont{\@title}}}
+  {\section*{\protect\normalfont{\@title}}}
+  {}{\typeout{Failed to patch title.}}
+\makeatother
+\shorttitle{A Bibliography}
+\keywords{keywords\newline\indent Word count: X}
+\DeclareDelayedFloatFlavor{ThreePartTable}{table}
+\DeclareDelayedFloatFlavor{lltable}{table}
+\DeclareDelayedFloatFlavor*{longtable}{table}
+\makeatletter
+\renewcommand{\efloat@iwrite}[1]{\immediate\expandafter\protected@write\csname efloat@post#1\endcsname{}}
+\makeatother
+\usepackage{lineno}
+
+\linenumbers
+\usepackage{csquotes}
+\ifxetex
+  % Load polyglossia as late as possible: uses bidi with RTL langages (e.g. Hebrew, Arabic)
+  \usepackage{polyglossia}
+  \setmainlanguage[]{english}
+\else
+  \usepackage[shorthands=off,main=english]{babel}
+\fi
+
+\author{\phantom{0}}
+\date{}
+
+
+\affiliation{\phantom{0}}
+
+\begin{document}
+
+\hypertarget{comparative-politics-field-seminar}{%
+\section{Comparative Politics Field Seminar}\label{comparative-politics-field-seminar}}
+
+Hendley (2009) evaluates why in Russia, where \enquote{telephone justice} has affected the justice system, use of the country's court system has increased. Through qualitative interviews the author gathers respondents' impressions of and experience with the courts finding though impressions of Russian courts seem dismal at first, average Russians have intuition as to when to pursue litigation. The author concludes that a dualistic system of justice defines the rule of law in Russia wherein matters of no political or monetary importance to the government are handled fairly and those where the government stands to gain may be subject to \enquote{telephone justice}.
+
+Bendaña \& Chopra (2013) discuss obstacles standing in the way of establishing the rule of law (discussed through the lens of women's rights) in Somaliland. Impediments identified include a lack of formal legal expertise, high crime rates, jurisdictional issues, and the societal importance of local clan leaders and communal good over individual rights. The authors identify the potential importance of allowing change in informal institutions to influence the advancement and legitimization of formal guarantees of individual rights.
+
+Rijpkema (2013) discusses competing definitions for what is considered the rule of law. One main distinction discussed is between rule of law as the minimum standard at which a law serves its essential purpose and as an aspirational standard for legal systems. Rijpkema differentiates between seeing the rule of law as a function or as a normative or descriptive principle. From these discussions, he synthesizes a single overarching definition of the rule of law which states: \enquote{legal rules must be general, prospective, open and clear, stable, noncontradictory and enforceable by institutions and procedures that are efficient and consistent.} He concludes human rights are an essential good-making function of the rule of law.
+
+Kosař \& Šipulová (2020) discuss different court packing strategies available to leaders seeking a more favorable judiciary. They identify three such strategies: expanding, emptying, and swapping. These in turn refer to the adding of justices, the reduction of justices, and the altering of the ideological composition of justices without alteration to court size. The authors differentiate between quantitative strategies (expanding or emptying) and qualitative strategies (swapping). They also note ways courts themselves can improve popular support and protect themselves from leaders who seek to alter their size and composition. Finally, they distinguish between \enquote{apex} courts and other regional and local courts.
+
+Versteeg \& Ginsburg (2017) evaluate four prominent indicators for measuring the rule of law in different countries. Despite differences in conceptualization, the authors identify methodological commonalities that lead to a correlation between these measures. Additionally, this correlation can be expanded to include measures of government corruption. The authors posit this correlation is a result of overlapping measures or the emergence of an overarching concept influencing both corruption and the rule of law. They specifically identify the strong role of expert perspectives in the measurement process. Finding that expert perspectives rarely correlate with public perceptions on the same issues, the authors attribute experts' past exposure to relevant issues and preferences to the distortion of measures of the rule of law.
+
+Helmke and Rosenbluth (2009) argue that certain attributes of democracies make them more hospitable to the establishment of independent courts and the rule of law. These attributes include institutional fragmentation (such as the separation of powers) and the prominent role of public opinion under democratic regimes. In societies where individual rights are valued highly, the authors contend that an independent judiciary is not necessary as political leverage can be exerted by the populace over politicians who choose to act against individual and minority rights.
+
+\hypertarget{political-science-as-a-discipline-and-profession}{%
+\section{Political Science as a Discipline and Profession}\label{political-science-as-a-discipline-and-profession}}
+
+Cramer (2016) claims that the socioeconomic and political environment in the US has fomented increasing polarization. Political policies have generally been those that the wealthy espouse. Cramer argues the answer is the politics of resentment: a political understanding rooted in resentment toward fellow citizens, largely on a rural/urban divide, rather than a partisan or issue-based reasoning where political decisions and preferences based more on using social categories to understand the political world. The author claims that a perspective of \enquote{rural consciousness}: identity as a rural person based on identity rooted in place and class. This is further characterized by a belief that rural areas are ignored by decision makers, including policy makers and the perception that rural areas do not get their fair share of resources. The author takes an ethnographic approach to understand the meaning people construct of their own lives and the world around them. The author listened to conversations in over 24 communities throughout Wisconsin.
+
+Abdelal, et al.~approaches this paper with the goal of solving the longstanding problem of identity being too analytically loose to be as useful a tool. He defines collective identity as a social category that varies along two dimensions: content and contestation. Content is made up of social purposes, relational comparisons, and cognitive models. Contestation refers to the degree of agreement in each group regarding the content of the shared category. The author advocates for six well-suited methodological options including discourse analysis, surveys, content analysis, experiments, agent-based modeling, and cognitive mapping.A longer-lasting contribution of this work may be our drawing explicit connections between alternative conceptualizations of the variation in identities and the methods available to measure them
+
+Wedeen (2002) shows how a critical understanding of culture as practices of meaning-making facilitates insights about politics, enabling political scientists to produce sophisticated causal arguments and to treat forms of evidence that, while manifestly political, most political science approaches tend to overlook. He does this by evaluating semiotic processes through language, symbols, and other political phenomena. He also discusses the role of culture in political science.
+
+\hypertarget{comments}{%
+\section{Comments}\label{comments}}
+
+\newpage
+
+\hypertarget{references}{%
+\section{References}\label{references}}
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+\hypertarget{refs}{}
+
+\endgroup
+
+
+\end{document}
