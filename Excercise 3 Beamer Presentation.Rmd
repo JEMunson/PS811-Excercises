@@ -1,0 +1,37 @@
+---
+title: "Excercise 3 Presentation"
+author: "Jessie Munson"
+date: "10/8/2020"
+output:
+  beamer_presentation:
+    theme: "Bergen"
+    colortheme: "beaver"
+    fonttheme: "structurebold"
+bibliography: ["r-references.bib"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Pros
+  Things I liked this week in the readings include:
+  
+- [@cramerMakingSensePolitics2016]speaks to something I believe is important, namely understanding what motivates rural populations to vote the way they do. Many decry rural voters as illogically voting "against their own interests" but this article applies a logic to the choices rural folks make.
+
+- [@helmkeRegimesRuleLaw2009] demonstrated contexts in which an independent judiciary may not be necessary in the protection of individual rights. Sometimes as Americans we get stuck in our conceptions of checks and balance and the role of our Supreme Court and it can be refreshing to view other perspectives that seek to accomplish the same objectives.
+
+
+# Cons
+
+Some of the articles could have been argued better:
+
+- [@kosarHowFightCourtPacking2020] categorize court packing strategies as quantitative (expanding and emptying) and qualitative (switching). It makes sense that the authors differentiate between strategies changing the total number of justices from those that do not. Changes in proportionality, however, still represent a quantitative shift. The article does not justify why switching is qualitative.
+
+- In [@hendleyTelephoneLawRule2009] the argument is incomplete. The interviews provided little indication of the respondents’ perception of justice in relationship to the existence of “telephone justice” in Russia. If everyday Russians don’t see telephone justice as a primary factor in deciding to take their problems to court why doesn't the author look at who is more likely to take that into consideration?
+
+
+# References
+
+
+
