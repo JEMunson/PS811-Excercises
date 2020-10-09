@@ -76,7 +76,6 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 
 # Comments
 
-
 \newpage
 
 # References
