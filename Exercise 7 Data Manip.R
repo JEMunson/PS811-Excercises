@@ -124,3 +124,4 @@ plot<- plot(compare$"MQ Score",compare$"Vote Direction")
  
 #Methods to analyze data
  #I will evaluate the frequency at which topics occur in tweets using my selected phrases. 
+#.
