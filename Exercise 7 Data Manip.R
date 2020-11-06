@@ -29,7 +29,9 @@ print(current_supreme_court)
 supremecourt_df <- as.data.frame(current_supreme_court)
 view(supremecourt_df)
 
-  
+# ms: you can just do this:
+supremecourt_df <- data.frame(justice, state, position, replacing, year_confirmed, senate_conf_vote, nominated_by)
+
 #2) Download Justices.csv. I'm not sure how to download the file from the
 #repository but did figure out I can download it from the URL without a local version
 library (readr)
@@ -44,6 +46,8 @@ justices<-read_csv(url(justicesonline))
 #first, download the second set of data to be merged
 #this one couldn't be done via the above procedure but luckily I am able to download it locally
 
+
+# ms: 
 SCDB<- read_dta(here("SCDB_2020_01_justiceCentered_Citation.dta"))
 
 #view the data to see if the names for variables are the same in each set
@@ -65,14 +69,15 @@ table(SCDB$justiceName)
 
 
 #merge the data sets
-megaSCOTUS<- inner_join(justices, SCDB, )
+# ms: you should specify the variables you are using to "link" the datasets
+megaSCOTUS<- inner_join(justices, SCDB)
 
 #4) Filter out justices with Martin-Quinn scores.
 
 SCOTUSScore <- megaSCOTUS %>%
   select("justiceName", "post_mn", "decisionDirection", "term")%>%
   filter(!is.na("post_mn"))
-  
+
 #5)Mean MQ score for each term
 MQ_means<- SCOTUSScore%>%
   group_by(term)%>%
@@ -83,25 +88,26 @@ MQ_means<- SCOTUSScore%>%
 #first mutate the decision directions
 
 mutated<- mutate(megaSCOTUS,
-          decisionDirection=
-         case_when(decisionDirection== 1 ~ 1,
-        decisionDirection == 2 ~ -1,
-        decisionDirection == 3 ~ 0))
+                 decisionDirection=
+                   case_when(decisionDirection== 1 ~ 1,
+                             decisionDirection == 2 ~ -1,
+                             decisionDirection == 3 ~ 0))
 
 #create a new variable in which to collect the MQ data (from Jess)
 
- decision_byterm<- mutated%>%
-   group_by(term)%>%
-   summarise(mean= mean(decisionDirection, na.rm = TRUE))
-      
- print(decision_byterm)
+decision_byterm<- mutated%>%
+  group_by(term)%>%
+  summarise(mean= mean(decisionDirection, na.rm = TRUE))
+
+print(decision_byterm)
 #7) compare the mean Martin-Quinn scores and vote directions
- 
+
 compare<- inner_join(decision_byterm, mutated, by="term")
 colnames(compare)<- c("term", "MQ Score", "Vote Direction")
 
 view(compare)
 
+# ms: I think you have the right idea but take a look at the answer key :)
 #plot the data
 plot<- plot(compare$"MQ Score",compare$"Vote Direction")
 
@@ -109,19 +115,26 @@ plot<- plot(compare$"MQ Score",compare$"Vote Direction")
 
 ## Brainstorm Final Project
 
+# ms: which class is this for?
+
 #What questions are you interested in?
 #I will be looking to find the dominant concerns people have about moving to online instruction during the Pandemic
- 
+
 #What are your independent and dependent variables
 #rural vs urban origins of posts 
- 
+# ms: these are not independent and dependent variables
+# ms: think of your question this way--what is your x and what is your y?
+# ms: you want to identify a cause and an effect
+# ms: what is your hypothesis?
+
 #How do you plan to measure the variables.
- #using text analysis of posts using the phrases "as a teacher", "as a student", and "as a parent" to learn what terms are associated with tweets using each phrase
- 
+#using text analysis of posts using the phrases "as a teacher", "as a student", and "as a parent" to learn what terms are associated with tweets using each phrase
+
 #What data will you need to collect? Which Datasets will you use
- 
+# ms: I would maybe focus on specific states or specify which state you're looking at
+# ms: not every state/county moved online at the same time...
 #Twitter data collected between March 1st, 2020 and July 15th, 2020
- 
+
 #Methods to analyze data
- #I will evaluate the frequency at which topics occur in tweets using my selected phrases. 
+#I will evaluate the frequency at which topics occur in tweets using my selected phrases. 
 #.
