@@ -1,0 +1,176 @@
+---
+title: 'Exercise 9: Analysis'
+author: "Jessie Munson"
+date: "11/12/2020"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Review
+
+1. Download the .Rmd version of this file from GitHub and change the author to your name.
+
+2. Load packages.
+
+```{r packages, include = FALSE}
+library("here")
+library("haven")
+library("Rmisc")
+library("magrittr")
+library("tidyverse")
+library("ggplot2")
+library("broom")
+library("MASS")
+library("estimatr")
+library("modelsummary")
+```
+
+3. Set up your files and folder structure.
+
+```{r}
+#oddly this didn't work for me so I just put it in via file explorer
+#here("code")
+#here("data")
+#They're in here as comments because the file won't knit with them active
+```
+
+4. Read the ANES .dta data into R using the `here` package.
+```{r}
+#anes2016 <- read_dta(here("PS811 Exercise 9/anes_timeseries_2016.dta"))
+
+#this doesn't work either. Something must be awry with the here package
+#I can do it this way though
+anes2016 <-read_dta("anes_timeseries_2016.dta")
+```
+
+5. Download the ANES 2016 codebook (available on the `ps811/data` repository). We will look at the full sample variables.
+
+6. You want to know whether owning a house (pre-election) affects which party the respondent choose to contribute to (post-election). Identify these variables from the codebook and rename the variables to names that are easier to reference.
+```{r}
+#independent variable is owning a house. Referred to in the study as V161334 on pg 547 of the codebook
+#it is coded: 1=rent, 2=mortgage, 3=no payment homeowner, 4=other, 5=don't know, -9=refused
+
+#the response variable is the party contribution, referred to in the study as V162014a on pg. 762 of the codebook
+#it is coded 1=democrat, 2=republican, 3=both, 5=other, -1, -6, -7=inapplicable or missing
+
+#now, rename the variables:
+anes2016$homeowner <- anes2016$V161334
+anes2016$party_contribution <- anes2016$V162014a
+
+
+```
+
+7. Now identify pre-election demographic variables, such as age, gender, and race. Manipulate these variables in ways that you believe would best capture these demographics and explain why you manipulated these variables that way you did. Rename these variables to names that are easier to reference.
+
+```{r}
+#pre-election demographic variablesare as follows:
+#Age is referred to as variable V161267 per pg. 426 of the codebook which codes it as: 18-90 or older
+#Race is refferred to as variable V161310x per pg 512 of the codebook where it is coded: 1=White, 2=Black, 3= Asian/Pacific Islander, 4=Native American/Alaskan Native, 5=Hispanic, 6=Other, -2=Missing
+#Gender is referred to as variable V161267 per pg. 556 of the codebook where it is coded: 1=Male, 2=Female, 3=Other, -9=Refused
+
+#Now to rename the demographic variables so they are more recognizable
+# rename variables
+anes2016$age <- anes2016$V161267
+anes2016$race <- anes2016$V161310x
+anes2016$gender <- anes2016$V161342
+
+#manipulate variables - we are trying to make them all bianary
+#first, we need to subset our data to get only the stuff we want
+anes20162 <- subset(anes2016, subset = age > 0 & 
+                                gender > 0 & 
+                                gender < 3 &
+                                race > 0 & 
+                                homeowner > 0 &
+                                homeowner < 4 &
+                                party_contribution > 0 &
+                                party_contribution < 3,
+                select = c(homeowner, party_contribution, age, gender, race)
+                )
+#Then we need the variables within the subset to be binary.
+#for the homeowner variable into a binary variable where 0= does not own a home and 1 = is a homeowner
+#since the variable originally included categories representing "other and "don't know" responses
+#we have removed these entirely. We also want to re-code the response "mortgage" from 2 on the study's categorical #scale to 1 in binary terms, We can do this using the mutate function:
+anes20162 <- 
+  mutate(anes20162,
+         homeowner = ifelse(homeowner == 1,
+                                0,
+                                1)
+         )
+#Similarly, we need to do this for the dependent variable, party_contribution
+#the original study codes this as follows: 1=democrat, 2=republican, 3=both, 5=other, -1, -6, -7=inapplicable or missing
+#we want to change this to 0=Dem, 1=Rep and get rid of the other responses.
+# use mutate function again
+anes20162 <- 
+  mutate(anes20162,
+         party_contribution = ifelse(party_contribution == 1,
+                                0,
+                                1)
+        )
+```
+
+8. Provide descriptive summaries for each variable.
+
+```{r}
+#Descriptive summaries for each variable
+summary(anes20162$age)
+summary(anes20162$gender)
+summary(anes20162$race)
+summary(anes20162$homeowner)
+summary(anes20162$party_contribution)
+
+```
+
+9. Run an appropriate regression analysis and insert the table into the R Markdown document.
+
+```{r}
+#regression per the lecture code
+ols <-
+  anes20162 %>%
+  lm(party_contribution ~ homeowner, data = .)
+
+#insert table
+summary(ols)
+
+#in discussing this with Jess and Clint we weren't sure the OLS regression was the best way to go. 
+#logit regression seemed like a plausible option:
+
+mylogit <- glm(party_contribution ~ homeowner + age + gender + race, data = anes20162, family = "binomial")
+
+#library("stargazer.R")
+#stargazer won't work either
+```
+
+10. Create a coefficient plot based on the above table.
+```{r}
+#change the variable names
+vars <- c('party_contribution' = 'Party Contribution',
+            'homeowner' = 'Homeowner',
+            'age' = 'Age',
+            'gender' = 'Gender',
+            'race' = 'Race')
+#Make a coefficient plot
+modelplot(mylogit, coef_map = vars)
+```
+
+
+# Your project
+
+Now it's your turn. Use the tools you used today to conduct data analysis for one of your final seminar papers.
+
+1. Create a descriptive statistics summary table for your main variables of interest. Note the number of observations.
+
+Since I don't have my text data quite yet I'm just going to discuss the likely variables.The response variable should be what phrases and topics come up most for each group whose tweets I evaluate. The independent variable will be the subject's location from which they are tweeting (rural or urban). Other variables are hard to ascertain given the lack of demographic information in the data set. I could do an east coast vs west coast analysis though if I already am looking at location.
+
+2. If you are planning to run a regression, please write out the regression formula. Please take into consideration the dependent variable and its distribution. If you already have the data, you may go ahead and run it. If you do not have the data and is in the process of collecting it, write out the formula. Pre-analysis plans are becoming more common in the discipline, so being able to record what you *plan* to do is becoming increasingly more important.
+
+$Y_i = f(X_i, \beta) + e_i$ Where Y is the subject of the tweet, X is the location of the poster.
+
+# Submit
+
+Email me (mshieh2@wisc.edu) the link to your `ps811-exercises` repository when you are done.
