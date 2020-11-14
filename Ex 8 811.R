@@ -12,6 +12,7 @@ boxplot(USArrests$Rape, main = "US Rape Arrests", ylab = "Rape Arrests", ylim = 
 
 #Rape arrests per state
 state.names = row.names(USArrests)
+# ms: this is showing all the states - check answer key to see how to shrink the text in order to show all the states
 barplot(USArrests$Rape, names.arg = state.names, las = 2, ylab= "Rape Arrests per 100,000", 
         main = "Rape Rate in the United States in 1973", ylim=c(0,50))
 
@@ -33,8 +34,7 @@ ggplot(data = USArrests, aes(x = Murder, y = Assault)) + geom_point()
 #make a boxplot of US Rape Arrests
 USArrestsRape <- as.factor(USArrests$Rape)
 p <- ggplot(USArrests, aes(x=, y=Rape)) + 
-  geom_boxplot() + ggtitle(label = "Rape Arrests")
-+ ylab(label="Rape Arrests")
+  geom_boxplot() + ggtitle(label = "Rape Arrests") + ylab(label="Rape Arrests")
 p
 
 #rape arrests by state
@@ -47,11 +47,19 @@ r
 
 #histogram of percentage of urban population
 
-h <- ggplot(USArrests, aes(x= propurban)) + 
-  geom_histogram()+ggtitle(label = "Proportion of Urban Population") + xlab(label="Proportion of Urban Poplulation")+ 
+h <- ggplot(USArrests, aes(x= propurban)) +
+  geom_histogram()+ggtitle(label = "Proportion of Urban Population") +
+  # you want geom_histogram(bins = 10)
+  xlab(label="Proportion of Urban Poplulation")+ 
   ylab(label="Frequency")
 h
 
-#My Project Graphs
+# ms: it should look like this--
+# you're not looking at frequency, you're looking at percent of urban population
 
-#.
+ggplot(data=USArrests, aes(x=UrbanPop)) +
+  geom_histogram(color = "Black", fill = "lightblue", bins = 10)+
+  labs(title = "Percent (%) of Urban Population", 
+       subtitle = "By U.S. State",
+       x = "Percent (%) Urban Population")
+###
