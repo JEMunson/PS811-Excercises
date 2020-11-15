@@ -38,6 +38,9 @@ library("modelsummary")
 #here("code")
 #here("data")
 #They're in here as comments because the file won't knit with them active
+
+# ms: i think what is going on is that the plyr package also has a here() command, and the plyr package was probably loaded along with magrittr and tidyverse...
+# ms: one way to get around this is doing here::here(), which means that you want to use the here command within the here package...
 ```
 
 4. Read the ANES .dta data into R using the `here` package.
@@ -144,6 +147,8 @@ mylogit <- glm(party_contribution ~ homeowner + age + gender + race, data = anes
 
 #library("stargazer.R")
 #stargazer won't work either
+
+# ms: you need to install.packages("stargazer") then run library(stargazer) 
 ```
 
 10. Create a coefficient plot based on the above table.
